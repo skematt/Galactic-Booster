@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,14 +15,31 @@ public class CollisionHandler : MonoBehaviour
     AudioSource audioSource;
 
     bool isTransitioning = false;
+    bool collisionEnabled = true;
     private void Start() {
         audioSource = GetComponent<AudioSource>();
     }
 
+    void Update() {
+        processDebugKeys();
+    }
+
+    private void processDebugKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadNextLevel();
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            collisionEnabled = !collisionEnabled;
+            Debug.Log("Collision mode changed to " + collisionEnabled);
+        }
+    }
 
     void OnCollisionEnter(Collision other) {
 
-        if (isTransitioning) 
+        if (isTransitioning || !collisionEnabled) 
         {
             return;
         }
